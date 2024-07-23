@@ -1,8 +1,0 @@
-locust --headless --users 10 --spawn-rate 1 --host 'http://172.23.176.159/opencart'
-
-# The command below starts the test in headless mode with 5 users, spawn rate of 1
-# -i option here is supposed to define :
-
-locust -f src/OpenCart_Compare_Products_Add_To_Wishlist.py --headless -u 5 -r 1 -i 4
-
-locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless -u 5 -r 1

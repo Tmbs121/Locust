@@ -1,8 +1,0 @@
-              random_h4_tag_1 = str(random.choice(h4_tags_list))
-              pattern = "product_id=(\d*)"
-              random_product_id_1 = re.findall(pattern, random_h4_tag_1)[0]
-            
-            # For debugging:
-            # print("h4_tags_list includes this: ", h4_tags_list)
-            # print("A randomly chosen h4_tag_1 looks like this: ", random_h4_tag_1)
-            # print("Product_id from the randomly chosen h4 tag is: ", random_product_id_1)

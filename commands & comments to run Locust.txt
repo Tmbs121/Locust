@@ -23,6 +23,10 @@ locust -f src/OpenCart_Compare_Products_Add_To_Wishlist.py --headless -u 5 -r 1 
  
 locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless --run-time 120s -u 2 -r 1
 
+command to run a python file from Playwright_module in Debug mode to pull up a Playwright inspector on the screen:
+$env:PWDEBUG=1
+pytest -s
+
 Command to run a Locust test using GUI mode (GUI window appears allowing to set the parameters of the test and control the run):
 locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py
 

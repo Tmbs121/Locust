@@ -23,7 +23,10 @@ locust -f src/OpenCart_Compare_Products_Add_To_Wishlist.py --headless -u 5 -r 1 
  
 locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless --run-time 120s -u 2 -r 1
 
+command to run a python file in the Playwright_module:
+locust -f Playwright_module/OpenCart_Compare_Products_Add_To_Wishlist.py
+
 Command to run a Locust test using GUI mode (GUI window appears allowing to set the parameters of the test and control the run):
 locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py
 
-Local instance of Locust runs in the browser on localhost:8089
+Local Locust instance runs in the browser on localhost:8089

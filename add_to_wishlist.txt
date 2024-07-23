@@ -1,9 +1,0 @@
-        @task
-        def add_product_1_to_wishlist(self):
-            with self.client.post(f"/upload/index.php?route=account/wishlist/add", {"product_id":{product_id_1}}, catch_response=True) as resp12:
-                if (" Success: You have added " and "wish list") in resp12.text:
-                    resp12.success()
-                else:
-                    resp12.failure("Validation based on a string from response failed")
-                    
-            logging.info('Product %s has been added to wishlist', product_id_1)  
