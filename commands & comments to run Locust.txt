@@ -23,11 +23,53 @@ locust -f src/OpenCart_Compare_Products_Add_To_Wishlist.py --headless -u 5 -r 1 
  
 locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless --run-time 120s -u 2 -r 1
 
-command to run a python file from Playwright_module in Debug mode to pull up a Playwright inspector on the screen:
+# Command to run a Locust test using GUI mode (GUI window appears allowing to set the parameters of the test and control the run):
+locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py
+
+# Local Locust instance runs in the browser on localhost:8089
+
+# Commands to run in VS terminal a .py file (with pytest plugin!) in Debug mode to pull up a Playwright inspector on the screen:
+.venv\Scripts\activate
+cd LocustProject_1\Playwright_module_UI_tests
 $env:PWDEBUG=1
 pytest -s
 
-Command to run a Locust test using GUI mode (GUI window appears allowing to set the parameters of the test and control the run):
-locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py
 
-Local Locust instance runs in the browser on localhost:8089
+# Commands to run in VS terminal a .py file without pytest plugin in Debug mode to pull up a Playwright inspector on the screen:
+.venv\Scripts\activate
+cd LocustProject_1\Playwright_module_UI_tests
+$env:PWDEBUG=1
+python OC_Compare_Products_Add_To_Wishlist_std_playwright.py
+
+
+# Playwright for Python has the so-called REPL mode which is an interactive mode that allows us to execute the script code
+# in real time line by line and see the effect of each line of code being executed in a separate browser window.
+# That's handy while creating a script because instead of writing the whole script first and then running
+# the whole thing and trying to find a problematic piece of code if smth doesn't work as expected we can instead
+# execute our script step by step as we add each new line of code, so if smth is off in the code line we've just added
+# we will spot it immediately.
+
+# To enter the interactive REPL mode we need to activate the virtual environment in the terminal first:
+.venv\Scripts\activate
+# and then just type the python command:
+python
+# This will get us into the interactive playwright mode and the terminal will show us we are in the REPL mode by
+# displaying >>> (triple right arrows) at the start of each terminal line.
+# Once we get into the REPL mode we'd need to write a few lines of code to initiate the objects/instances that are
+# mandatory to be initiated for each playwright test, so we'd go:
+# >>> from playwright.sync_api import sync_playwright
+# >>> playwright = sync_playwright().start()
+# >>> browser = playwright.chromium.launch(headless=False, slow_mo=500)
+# >>> page = browser.new_page()
+# >>> page.goto("http://172.23.176.159/opencart/upload")
+# >>> signin_link = page.get_by_role("link", name="Login")
+# >>> We can highlight the web element we need (signin link in this case) to make sure that's indeed the element we want:
+# >>> signin_link.highlight()
+# >>> Now we are good to proceed with the rest of our script according to our UI flow. 
+
+# To quit the REPL mode, we'd first need to close the browser and stop the playwright instance and then exit REPL session:
+# >>> browser.close()
+# >>> playwright.stop()
+# >>> exit()
+
+# And now we are out of REPL and back to the usual mode in the terminal, in the active venv.
