@@ -1,4 +1,4 @@
-import re
+import re, random, Parse_User_Credentials_From_CSV
 from playwright.sync_api import sync_playwright, Playwright, expect
 
 def run(playwright: Playwright) -> None:
@@ -13,7 +13,7 @@ def run(playwright: Playwright) -> None:
     page.goto("http://172.23.176.159/opencart/upload")
     
     # We better wait until the whole page loads before we can proceed with further actions.
-    # wait_for_load_state("networkidle") means that we'll be waiting until there's no network activity for at least 500 ms.
+    # wait_for_load_state("networkidle") means we'll be waiting until there's no network activity for at least 500 ms.
     # That would be a good sign that the page we are going to test has fully loaded.
     page.wait_for_load_state("networkidle")
     expect(page).to_have_title(re.compile("Your Store"))
@@ -32,12 +32,20 @@ def run(playwright: Playwright) -> None:
     # behavior we'd probably prefer to see in the Playwright script.
     expect(page.get_by_role("heading", name="Returning Customer")).to_be_visible()
     
+    # Retrieve from the 'Parse_User_Credentials_From_CSV' module the list USER_CREDENTIALS
+    # that contains all credentials parsed from csv file and then use random.choice to pick a
+    # random credential pair from the parsed csv content.
+    USER_CREDENTIALS = Parse_User_Credentials_From_CSV.LoginWithCredsFromCSV.readCredsFromCSV()
+    credentials_pair = random.choice(USER_CREDENTIALS)
+    username = credentials_pair[0]
+    password = credentials_pair[1]
+    
     # Enter the username and password in the login form to log in to the user's profile 
     page.get_by_placeholder("E-Mail Address").click()
-    page.get_by_placeholder("E-Mail Address").fill("admin4489@gmail.com")
+    page.get_by_placeholder("E-Mail Address").fill(username)
     page.get_by_placeholder("E-Mail Address").press("Tab")
     
-    page.get_by_placeholder("Password").fill("Qwerty")
+    page.get_by_placeholder("Password").fill(password)
     page.get_by_placeholder("Password").press("Enter")
     page.wait_for_load_state("networkidle")
     expect(page.locator("#content").get_by_role("heading", name="My Account")).to_be_visible()
