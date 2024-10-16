@@ -37,9 +37,9 @@ pytest -s
 
 # Commands to run in VS terminal a .py file without pytest plugin in Debug mode to pull up a Playwright inspector on the screen:
 .venv\Scripts\activate
-cd LocustProject_1\Playwright_module_UI_tests
+cd LocustProject_1
 $env:PWDEBUG=1
-python OC_Compare_Products_Add_To_Wishlist_std_playwright.py
+python Playwright_module_UI_tests/OC_Compare_Products_Add_To_Wishlist_std_playwright.py
 
 
 # Playwright for Python has the so-called REPL mode which is an interactive mode that allows us to execute the script code
