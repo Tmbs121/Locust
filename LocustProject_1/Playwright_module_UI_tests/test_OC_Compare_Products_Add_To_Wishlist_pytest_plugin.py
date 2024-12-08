@@ -1,14 +1,14 @@
-import re
+import re, random, Parse_User_Credentials_From_CSV
 from playwright.sync_api import Page, expect
 
 
-def test_Compare_Products_Add_to_Wishlist(page: Page):
+def test_go_to_home_page(page: Page):
     page.goto("http://172.23.176.159/opencart/upload")
     
     # Assertion: Expect a title "to contain" a certain substring
     expect(page).to_have_title(re.compile("Your Store"))
     
-def nagivate_to_user_login_form(userLoginFormPage: Page):
+def test_nagivate_to_user_login_form_and_proceed(userLoginFormPage: Page):
     userLoginFormPage.goto("http://172.23.176.159/opencart/upload/index.php?route=account/login")
     expect(userLoginFormPage.get_by_role("heading", name="Returning Customer")).to_be_visible()
     
