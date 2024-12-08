@@ -1,8 +1,8 @@
-import re, random, Parse_User_Credentials_From_CSV
-from playwright.sync_api import Page, expect, sync_playwright
+import re
+from playwright.sync_api import Page, expect
 
 
-def navigate_to_OC_home_page(page: Page):
+def test_Compare_Products_Add_to_Wishlist(page: Page):
     page.goto("http://172.23.176.159/opencart/upload")
     
     # Assertion: Expect a title "to contain" a certain substring
