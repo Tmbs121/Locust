@@ -1,5 +1,5 @@
 from locust import HttpUser, task
-import re, random
+import re, random, lxml
 from bs4 import BeautifulSoup
 
 
