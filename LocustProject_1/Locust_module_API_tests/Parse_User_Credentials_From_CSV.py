@@ -6,7 +6,7 @@ USER_CREDENTIALS = []
 class LoginWithCredsFromCSV(User):
     username = "NOT_FOUND"
     password = "NOT_FOUND"
-        
+    
     def readCredsFromCSV():
         global USER_CREDENTIALS
         with open(os.path.join("test_data", "OpencartCreds.csv"), 'r') as f:

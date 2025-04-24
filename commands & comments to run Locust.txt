@@ -1,3 +1,22 @@
+# Prerequisites:
+# 1). 
+#I use BeautifulSoup Python library to parse html responses from OpenCart, so before running any Locust scripts, better check
+# that BeautifulSoup is indeed installed in the virtual environment that I'm currently using:
+
+pip show bs4
+
+# And if it shows it's not installed, install it:
+
+pip install bs4
+pip show bs4
+
+# 2). 
+#I also use lxml parser with BeautifulSoup library, so lxml needs to be installed in the venv that is currently active:
+
+pip install lxml
+	
+______________________________________________________________________________________________________________________________
+
 Commands for non-GUI mode (running the test in the terminal only):
 
 # The command below indicates the 'base URL' (called the host here) that we are going to run the test against: 
@@ -9,44 +28,41 @@ locust --headless --users 10 --spawn-rate 1 --host 'http://172.23.176.159/openca
 # option in the command. However, -i doesn't seem to work the way I expected. It just repeats the first step of the test
 # (the first task in the SequentialTaskSet and never gets to running the rest of the tasks):
 
-locust -f src/OpenCart_Compare_Products_Add_To_Wishlist.py --headless -u 5 -r 1 -i 4
+locust -f Locust_module_API_tests/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless -u 5 -r 1 -i 4
 
 
-# Below is my go-to version of Locust command that I use to start the test in non-GUI.
+# Below is an example of the Locust command to start the test in non-GUI.
 # This version runs the python file which includes SequentialTaskSet class.
-# SequentialTaskSet is supposed to run the steps of my test (each step being a subtask of SequentialTaskSet) in a
-# specific order, in a sequence defined by the code rather than in some random order. But for some reason
-# the post request for the account/account endpoint gets executed BEFORE the get request for the account/login endpoint
-# even though it should be vice-versa: in my code the task for account/login endpoint is defined
-# above the task for post request hitting the account/account endpoint, so I'd expect account/login endpoint to be called
-# first, followed by the account/account call.
  
-locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless --run-time 120s -u 2 -r 1
+locust -f Locust_module_API_tests/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless --run-time 120s -u 2 -r 1
 
 # Command to run a Locust test using GUI mode (GUI window appears allowing to set the parameters of the test and control the run):
-locust -f src/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py
+locust -f Locust_module_API_tests/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py
 
 # Local Locust instance runs in the browser on localhost:8089
 
-# Commands to run in VS terminal a .py file (with pytest plugin!) in Debug mode to pull up a Playwright inspector on the screen:
+# Commands to run a .py file (with pytest plugin!) in Debug mode to pull up a Playwright inspector on the screen.
+# In case you use Visual Studio Code as your IDE, this is to be run from VS terminal:
 .venv\Scripts\activate
 cd LocustProject_1\Playwright_module_UI_tests
 $env:PWDEBUG=1
 pytest -s
 
 
-# Commands to run in VS terminal a .py file without pytest plugin in Debug mode to pull up a Playwright inspector on the screen:
+# Commands to run a .py file without pytest plugin in Debug mode to pull up a Playwright inspector on the screen.
+# In case you use Visual Studio Code as your IDE, this is to be run from VS terminal:
 .venv\Scripts\activate
 cd LocustProject_1
 $env:PWDEBUG=1
 python Playwright_module_UI_tests/OC_Compare_Products_Add_To_Wishlist_std_playwright.py
-
+________________________________________________________________________________________
+# REPL mode guidance:
 
 # Playwright for Python has the so-called REPL mode which is an interactive mode that allows us to execute the script code
 # in real time line by line and see the effect of each line of code being executed in a separate browser window.
 # That's handy while creating a script because instead of writing the whole script first and then running
 # the whole thing and trying to find a problematic piece of code if smth doesn't work as expected we can instead
-# execute our script step by step as we add each new line of code, so if smth is off in the code line we've just added
+# execute our script step by step as we add each new line of code, so if smth is off in the specific line of code
 # we will spot it immediately.
 
 # To enter the interactive REPL mode we need to activate the virtual environment in the terminal first:
@@ -73,3 +89,13 @@ python
 # >>> exit()
 
 # And now we are out of REPL and back to the usual mode in the terminal, in the active venv.
+_____________________________________________________________________________________________
+
+# To start playwright in recording mode, run from the terminal:
+playwright codegen
+
+# We can also start codegen indicating the URL address of the website that we want to record our actions on, right in the command:
+playwright codegen http://172.23.176.159/opencart/upload/ 
+
+# We can also add to the same command the path to the file where we want playwright inspector to save the recorded code.
+playwright codegen http://172.23.176.159/opencart/upload/ -o <path to the file>

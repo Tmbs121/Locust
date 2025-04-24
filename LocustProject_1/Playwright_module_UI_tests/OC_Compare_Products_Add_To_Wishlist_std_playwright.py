@@ -8,7 +8,7 @@ def run(playwright: Playwright) -> None:
     # within the same user session.
     context = browser.new_context()
     # Create a new page
-    page = browser.new_page()
+    page = context.new_page()
     # Head over to OpenCart website
     page.goto("http://172.23.176.159/opencart/upload")
     
