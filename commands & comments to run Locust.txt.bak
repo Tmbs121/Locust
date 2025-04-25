@@ -55,6 +55,7 @@ locust -f Locust_module_API_tests/OpenCart_Compare_Products_Add_To_Wishlist_Sequ
 cd LocustProject_1
 .venv\Scripts\activate
 $env:PWDEBUG=1
+cd Playwright_module_UI_tests
 pytest -s
 
 

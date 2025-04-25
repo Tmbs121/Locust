@@ -32,11 +32,11 @@ def run(playwright: Playwright) -> None:
     # behavior we'd probably prefer to see in the Playwright script.
     expect(page.get_by_role("heading", name="Returning Customer")).to_be_visible()
     
-    # Retrieve from the 'Parse_User_Credentials_From_CSV' module the list USER_CREDENTIALS
+    # Retrieve from the 'Parse_User_Credentials_From_CSV' module the USER_CREDENTIALS dict
     # that contains all credentials parsed from csv file and then use random.choice to pick a
     # random credential pair from the parsed csv content.
     USER_CREDENTIALS = Parse_User_Credentials_From_CSV.LoginWithCredsFromCSV.readCredsFromCSV()
-    credentials_pair = random.choice(USER_CREDENTIALS)
+    credentials_pair = random.choice(list(USER_CREDENTIALS.items()))
     username = credentials_pair[0]
     password = credentials_pair[1]
     
