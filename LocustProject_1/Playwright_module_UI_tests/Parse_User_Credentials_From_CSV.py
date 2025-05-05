@@ -15,7 +15,7 @@ class LoginWithCredsFromCSV(User):
         
         
     def useEachCredPairOnlyOnce():
-        for username, password in USER_CREDENTIALS:
+        for username in USER_CREDENTIALS:
             if len(USER_CREDENTIALS) > 0:
                 USER_CREDENTIALS.pop(username)
                 
