@@ -1,5 +1,6 @@
 [
   "Playwright_module_UI_tests/test_OC_Compare_Products_Add_To_Wishlist_pytest_plugin.py::test_Compare_Products_Add_to_Wishlist[chromium]",
   "Playwright_module_UI_tests/test_OC_Compare_Products_Add_To_Wishlist_pytest_plugin.py::test_go_to_home_page[chromium]",
+  "Playwright_module_UI_tests/test_OC_Compare_Products_Add_To_Wishlist_pytest_plugin.py::test_nagivate_to_login_form_and_proceed[chromium]",
   "Playwright_module_UI_tests/test_OC_Compare_Products_Add_To_Wishlist_pytest_plugin.py::test_nagivate_to_user_login_form_and_proceed[chromium]"
 ]

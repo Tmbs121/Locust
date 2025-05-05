@@ -13,25 +13,11 @@ pip install bs4
 pip show bs4
 
 # 2). 
-# I also use lxml parser with BeautifulSoup library, so lxml needs to be installed in the same venv
-# (C:\Endava\EndevLocal\Locust\LocustProject_1\.venv):
+# I also use lxml parser with BeautifulSoup library, so lxml needs to be installed in the venv that is currently active:
 
 pip install lxml
 
-
-# 3).
-# Install locust module in the same venv (C:\Endava\EndevLocal\Locust\LocustProject_1\.venv):
-
-pip install locust
-
-
-# 4).
-# Install playwright module in the same venv (C:\Endava\EndevLocal\Locust\LocustProject_1\.venv):
-
-pip install playwright
-
-# Alternatively, instead of steps 1 - 4, we can install everything (locust, bs4, lxml, playwright) in one go
-# from requirements.txt file. To use requirements.txt file for modules installation:
+# Alternatively, we can install everything (locust, bs4, lxml, playwright) in one go from requirements.txt file.
 # Add requirements.txt to LocustProject_1.
 # Add to the file the list of all the modules that need to be installed:
 #	locust
@@ -39,15 +25,8 @@ pip install playwright
 #	bs4
 #	playwright 
 
-# Run requirements.txt from active virtual env (C:\Endava\EndevLocal\Locust\LocustProject_1\.venv in this case) with the command:
+# Run requirements.txt from active virtual env with the command:
 pip install -r </path/to/requirements.txt>	
-
-
-# 5).
-# Once playwright module is installed, we also need to install all the browsers for it by running in the same venv:
-
-playwright install
- 
 ______________________________________________________________________________________________________________________________
 
 Commands for non-GUI mode (running the test in the terminal only):
