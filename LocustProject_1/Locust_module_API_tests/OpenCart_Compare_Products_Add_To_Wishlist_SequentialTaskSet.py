@@ -22,7 +22,7 @@ USER_CREDENTIALS = Parse_User_Credentials_From_CSV.LoginWithCredsFromCSV.readCre
 @events.test_start.add_listener
 def test_start(environment, **kwargs):
     print("Start of a new test")
-    Parse_User_Credentials_From_CSV.LoginWithCredsFromCSV.useEachCredPairOnlyOnce
+    Parse_User_Credentials_From_CSV.LoginWithCredsFromCSV.useEachCredPairOnlyOnce()
 
 
 class CompareProductsAddToWishListScenario(HttpUser):
@@ -32,6 +32,8 @@ class CompareProductsAddToWishListScenario(HttpUser):
     class SequenceOfTasks(SequentialTaskSet):
         wait_time = between(1,3)
         global host
+        global product_id_1
+        global product_id_2
     
         @task
         def land_to_oc_home_page(self):
@@ -51,7 +53,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
     
         @task
         def login_to_user_profile(self):
-            credentials_pair = random.choice(USER_CREDENTIALS)
+            credentials_pair = random.choice(list(USER_CREDENTIALS.items()))
             username = credentials_pair[0]
             password = credentials_pair[1]
             with self.client.post("/upload/index.php?route=account/account", {"username":username, "password":password}, catch_response=True) as resp3:
@@ -91,10 +93,10 @@ class CompareProductsAddToWishListScenario(HttpUser):
         def choose_product_2_add_it_to_compare_list(self):
             # global product_id_2
             # Note on global variables:
-            # Using global variables may be thread-unsafe and is generally considered risky and not the best practice.
+            # Using global variables may be thread-unsafe and generally is considered risky.
             # So whenever we need a variable that could be visible across all the tasks in the 
             # SequentialTaskSet, using self.<variable name> (e.g. self.product_id_1 and self.product_id_2)
-            # seems a much better option that dealing with global variables.
+            # seems a better option that dealing with global variables.
             self.product_id_2 = ParseHTMLResponseExtractProductIDs.extract_random_product_ids(self)[1]
             
             with self.client.get(f"/upload/index.php?route=product/product&path=18&product_id={self.product_id_2}", catch_response=True) as resp7:
@@ -151,7 +153,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
                       
         @task
         def logout_from_user_profile(self):
-            credentials_pair = random.choice(USER_CREDENTIALS)
+            credentials_pair = random.choice(list(USER_CREDENTIALS.items()))
             username = credentials_pair[0]
             with self.client.get("/upload/index.php?route=account/logout", catch_response=True) as resp13:
                 if ("You have been logged off your account. It is now safe to leave the computer.") in resp13.text:

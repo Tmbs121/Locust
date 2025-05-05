@@ -1,5 +1,5 @@
 from locust import HttpUser, task
-import re, random
+import re, random, lxml
 from bs4 import BeautifulSoup
 
 
@@ -10,7 +10,7 @@ class ParseHTMLResponseExtractProductIDs(HttpUser):
     def extract_random_product_ids(self):
         response = self.client.get("/upload/index.php?route=product/category&path=18",
                                        name="/choosing_notebooks_and_laptops_product_category")
-        soup = BeautifulSoup(response.text, "lxml")
+        soup = BeautifulSoup(response.text, lxml)
         h4_tags_list = soup.find_all('h4')           
         h4_tags_list_2_random_tags = random.sample(h4_tags_list, 2)
         random_h4_tag_1 = h4_tags_list_2_random_tags[0]

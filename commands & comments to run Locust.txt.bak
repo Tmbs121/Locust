@@ -1,0 +1,114 @@
+# Prerequisites:
+
+# 1). 
+# I use BeautifulSoup Python library to parse html responses from OpenCart, so before running any Locust scripts, better check
+# that BeautifulSoup is indeed installed in the virtual environment that I'm currently using
+# (C:\Endava\EndevLocal\Locust\LocustProject_1\.venv):
+
+pip show bs4
+
+# And if it shows it's not installed, install it:
+
+pip install bs4
+pip show bs4
+
+# 2). 
+# I also use lxml parser with BeautifulSoup library, so lxml needs to be installed in the venv that is currently active:
+
+pip install lxml
+
+# Alternatively, we can install everything (locust, bs4, lxml, playwright) in one go from requirements.txt file.
+# Add requirements.txt to LocustProject_1.
+# Add to the file the list of all the modules that need to be installed:
+#	locust
+#	lxml
+#	bs4
+#	playwright 
+
+# Run requirements.txt from active virtual env with the command:
+pip install -r </path/to/requirements.txt>	
+______________________________________________________________________________________________________________________________
+
+Commands for non-GUI mode (running the test in the terminal only):
+
+# The command below starts the test in headless mode with 5 users, spawn rate of 1
+# -i option here is supposed to define the number of iterations for each task, so if want to run each task only a certain
+# number of iterations rather than run the test endlessly until it's stopped by Ctrl+C, we may want to include the -i
+# option in the command. However, -i doesn't seem to work with SequentialTaskSet the way I expected. 
+# It just repeats the first sub-task in the SequentialTaskSet and never gets to run the rest of the sub-tasks:
+
+locust -f Locust_module_API_tests/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless -u 5 -r 1 -i 4
+
+
+# Another example of the Locust command to start the test in non-GUI.
+# This version runs the python file which includes SequentialTaskSet class. 
+# Make sure your current location is LocustProject_1 !
+ 
+locust -f Locust_module_API_tests/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py --headless --run-time 120s -u 2 -r 1
+
+# Command to run a Locust test using GUI mode (GUI window appears allowing to set the parameters of the test and control the run):
+locust -f Locust_module_API_tests/OpenCart_Compare_Products_Add_To_Wishlist_SequentialTaskSet.py
+
+# Local Locust instance runs in the browser on localhost:8089
+
+# Commands to run a .py file (with pytest plugin!) in Debug mode to pull up a Playwright inspector on the screen.
+# In case you use Visual Studio Code as your IDE, this is to be run from VS terminal:
+
+cd LocustProject_1
+.venv\Scripts\activate
+$env:PWDEBUG=1
+pytest -s
+
+
+# Commands to run a .py file without pytest plugin in Debug mode to pull up a Playwright inspector on the screen.
+# In case you use Visual Studio Code as your IDE, this is to be run from VS terminal:
+
+cd LocustProject_1
+.venv\Scripts\activate
+$env:PWDEBUG=1
+python Playwright_module_UI_tests/OC_Compare_Products_Add_To_Wishlist_std_playwright.py
+________________________________________________________________________________________
+# REPL mode guidance:
+
+# Playwright for Python has the so-called REPL mode which is an interactive mode that allows us to execute the script code
+# in real time line by line and see the effect of each line of code being executed in a separate browser window.
+# That's handy while creating a script because instead of writing the whole script first and then running
+# the whole thing and trying to find a problematic piece of code if smth doesn't work as expected we can instead
+# execute our script step by step as we add each new line of code, so if smth is off in the specific line of code
+# we will spot it immediately.
+
+# To enter the interactive REPL mode we need to activate the virtual environment in the terminal first:
+cd LocustProject_1
+.venv\Scripts\activate
+# and then just type the python command:
+python
+# This will get us into the interactive playwright mode and the terminal will show us we are in the REPL mode by
+# displaying >>> (triple right arrows) at the start of each terminal line.
+# Once we get into the REPL mode we'd need to write a few lines of code to initiate the objects/instances that are
+# mandatory to be initiated for each playwright test, so we'd go:
+# >>> from playwright.sync_api import sync_playwright
+# >>> playwright = sync_playwright().start()
+# >>> browser = playwright.chromium.launch(headless=False, slow_mo=500)
+# >>> page = browser.new_page()
+# >>> page.goto("http://172.23.176.159/opencart/upload")
+# >>> signin_link = page.get_by_role("link", name="Login")
+# >>> We can highlight the web element we need (signin link in this case) to make sure that's indeed the element we want:
+# >>> signin_link.highlight()
+# >>> Now we are good to proceed with the rest of our script according to our UI flow. 
+
+# To quit the REPL mode, we'd first need to close the browser and stop the playwright instance and then exit REPL session:
+# >>> browser.close()
+# >>> playwright.stop()
+# >>> exit()
+
+# And now we are out of REPL and back to the usual mode in the terminal, in the active venv.
+_____________________________________________________________________________________________
+
+# To start playwright in recording mode, run from the terminal:
+playwright codegen
+
+# We can also start codegen indicating the URL address of the website that we want to record our actions on, right in the command:
+playwright codegen http://172.23.176.159/opencart/upload/ 
+
+# We can also add to the same command the path to the file where we want playwright inspector to save the recorded code.
+playwright codegen http://172.23.176.159/opencart/upload/ -o <path to the file>
