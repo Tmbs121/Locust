@@ -1,3 +1,0 @@
-locust
-lxml
-bs4
