@@ -1,0 +1,5 @@
+locust
+lxml
+bs4
+playwright
+pytest
