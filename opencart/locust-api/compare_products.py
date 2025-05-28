@@ -1,12 +1,12 @@
-import parse_user_credentials_from_csv
+from api_ui_common_modules import parse_user_credentials_from_csv
+from parse_html_extract_product_ids import ParseHTMLResponseExtractProductIDs
 import logging
 import random
 from http.client import HTTPConnection
 
 from locust import HttpUser, task, events, SequentialTaskSet, between
 
-
-from parse_html_extract_product_ids import ParseHTMLResponseExtractProductIDs
+from api_ui_common_modules.parse_user_credentials_from_csv import LoginWithCreds, user_credentials
 
 # In case we need to do debugging, we'll need to import the run_single_user function from locust module:
 # from locust import run_single_user
@@ -18,13 +18,13 @@ requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 
+
 # Retrieve from the 'Parse_User_Credentials_From_CSV' module the list user_credentials that contains all credentials
 # parsed from csv file
-user_credentials = parse_user_credentials_from_csv.LoginWithCreds.read_creds_from_csv()
 
 
 @events.test_start.add_listener
-def test_start(self):
+def test_start(self=LoginWithCreds):
     print("Start of a new test")
     parse_user_credentials_from_csv.LoginWithCreds.use_each_cred_pair_only_once(self)
 
@@ -44,7 +44,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
         @task
         def land_to_oc_home_page(self):
             with self.client.get("/upload", catch_response=True) as resp1:
-                if ("Featured") in resp1.text:
+                if "Featured" in resp1.text:
                     resp1.success()
                 else:
                     resp1.failure("Validation based on a string from response failed")
@@ -52,7 +52,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
         @task
         def navigate_to_login_form(self):
             with self.client.get("/upload/index.php?route=account/login", catch_response=True) as resp2:
-                if ("Returning Customer") in resp2.text:
+                if "Returning Customer" in resp2.text:
                     resp2.success()
                 else:
                     resp2.failure("Validation based on a string from response failed")
@@ -64,7 +64,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
             password = credentials_pair[1]
             with self.client.post("/upload/index.php?route=account/account",
                                   {"username": username, "password": password}, catch_response=True) as resp3:
-                if ("My Account") in resp3.text:
+                if "My Account" in resp3.text:
                     resp3.success()
                 else:
                     resp3.failure("Validation based on a string from response failed")
@@ -82,7 +82,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
 
             with self.client.get(f"/upload/index.php?route=product/product&path=18&product_id={self.product_id_1}",
                                  catch_response=True) as resp5:
-                if ("Description") in resp5.text:
+                if "Description" in resp5.text:
                     resp5.success()
                 else:
                     resp5.failure("Validation based on a string from response failed")
@@ -101,7 +101,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
             self.product_id_2 = ParseHTMLResponseExtractProductIDs.extract_random_product_ids()[1]
             with self.client.get(f"/upload/index.php?route=product/product&path=18&product_id={self.product_id_2}",
                                  catch_response=True) as resp7:
-                if ("Description") in resp7.text:
+                if "Description" in resp7.text:
                     resp7.success()
                 else:
                     resp7.failure("Validation based on a string from response failed")
@@ -118,7 +118,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
         @task
         def open_compare_list(self):
             with self.client.get("/upload/index.php?route=product/compare", catch_response=True) as resp9:
-                if ("Product Comparison") in resp9.text:
+                if "Product Comparison" in resp9.text:
                     resp9.success()
                 else:
                     resp9.failure("Validation based on a string from response failed")
@@ -127,7 +127,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
         def remove_one_product_from_compare_list(self):
             with self.client.get(f"/upload/index.php?route=product/compare&remove={self.product_id_2}",
                                  catch_response=True) as resp10:
-                if (" Success: You have modified") in resp10.text:
+                if " Success: You have modified" in resp10.text:
                     resp10.success()
                 else:
                     resp10.failure("Validation based on a string from response failed")
@@ -137,7 +137,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
         def back_to_product_1_description_page(self):
             with self.client.get(f"/upload/index.php?route=product/product&product_id={self.product_id_1}",
                                  catch_response=True) as resp11:
-                if ("Description") in resp11.text:
+                if "Description" in resp11.text:
                     resp11.success()
                 else:
                     resp11.failure("Validation based on a string from response failed")
@@ -158,7 +158,7 @@ class CompareProductsAddToWishListScenario(HttpUser):
             credentials_pair = random.choice(list(user_credentials.items()))
             username = credentials_pair[0]
             with self.client.get("/upload/index.php?route=account/logout", catch_response=True) as resp13:
-                if ("You have been logged off your account. It is now safe to leave the computer.") in resp13.text:
+                if "You have been logged off your account. It is now safe to leave the computer." in resp13.text:
                     resp13.success()
                 else:
                     resp13.failure("Validation based on a string from response failed")

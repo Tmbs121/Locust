@@ -4,6 +4,8 @@ import re
 from bs4 import BeautifulSoup
 from locust import HttpUser, task
 
+product_ids = []
+
 
 class ParseHTMLResponseExtractProductIDs(HttpUser):
     host = "http://172.23.176.159/opencart"
@@ -20,11 +22,6 @@ class ParseHTMLResponseExtractProductIDs(HttpUser):
         pattern = "product_id=(\d*)"
         random_product_id_1 = re.findall(pattern, str(random_h4_tag_1))[0]
         random_product_id_2 = re.findall(pattern, str(random_h4_tag_2))[0]
-        return [random_product_id_1, random_product_id_2]
-
-        # For debugging:
-        # print("h4_tags_list_2_random_tags including 2 randomly chosen tags: ", h4_tags_list_2_random_tags)
-        # print("random_h4_tag_1 is: ", random_h4_tag_1)
-        # print("random_h4_tag_2 is: ", random_h4_tag_2)
-        # print("random_product_id_1 is: ", random_product_id_1)
-        # print("random_product_id_2 is: ", random_product_id_2)
+        product_ids.insert(0, random_product_id_1)
+        product_ids.insert(1, random_product_id_2)
+        return product_ids

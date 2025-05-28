@@ -92,7 +92,10 @@ locust -f locust-api/compare_products.py
 # Local Locust instance runs in the browser on localhost:8089
 
 # Commands to run a .py file (with pytest plugin!) in Debug mode to pull up a Playwright inspector on the screen.
-# In case you use Visual Studio Code as your IDE, this is to be run from VS terminal:
+# This is to be run from your IDE integrated terminal.
+# Before running the pytest command, make sure your current location is `opencart` package because that's where
+# test_data\opencart_creds.csv file is located. Trying to run the test from a location other than `opencart`
+# will return an error saying `opencart_creds.csv` file cannot be found.  
 
 cd opencart
 .venv\Scripts\activate
@@ -101,7 +104,7 @@ pytest -s
 
 
 # Commands to run a .py file without pytest plugin in Debug mode to pull up a Playwright inspector on the screen.
-# In case you use Visual Studio Code as your IDE, this is to be run from VS terminal:
+# This is to be run from your IDE integrated terminal:
 
 cd opencart
 .venv\Scripts\activate

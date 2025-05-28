@@ -2,8 +2,8 @@ import random
 import re
 
 from playwright.sync_api import sync_playwright, Playwright, expect
-import parse_user_credentials_from_csv
-from parse_user_credentials_from_csv import LoginWithCreds
+from api_ui_common_modules import parse_user_credentials_from_csv
+from api_ui_common_modules.parse_user_credentials_from_csv import LoginWithCreds
 
 
 def run(playwright: Playwright, self=LoginWithCreds) -> None:

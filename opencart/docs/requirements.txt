@@ -3,3 +3,4 @@ lxml
 bs4
 playwright
 pytest
+pytest-playwright
